@@ -934,6 +934,17 @@ namespace NuGet.Commands
                         await _logger.LogAsync(message);
                     }
                 }
+            } else if(!File.Exists(packagesLockFilePath)) {
+                success = false;
+
+                // invalid input since packages.lock.json file does not exist along with RestoreLockedMode set to strict.
+                var message = string.Format(CultureInfo.CurrentCulture, Strings.Error_MissingLockFile, packagesLockFilePath);
+
+                // directly log to the request logger when we're not going to rewrite the assets file otherwise this log will
+                // be skipped for netcore projects.
+                await _request.Log.LogAsync(RestoreLogMessage.CreateError(NuGetLogCode.<Some error code here>, message));
+
+                return (success, isLockFileValid, packagesLockFile);
             }
 
             return (success, isLockFileValid, packagesLockFile);
