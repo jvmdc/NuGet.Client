@@ -934,11 +934,11 @@ namespace NuGet.Commands
                         await _logger.LogAsync(message);
                     }
                 }
-            } else if(!File.Exists(packagesLockFilePath)) {
+            } else if (!File.Exists(packagesLockFilePath) && <LockedMode is set to strict or new flag enabled, depending on preference>) {
                 success = false;
 
-                // invalid input since packages.lock.json file does not exist along with RestoreLockedMode set to strict.
-                var message = string.Format(CultureInfo.CurrentCulture, Strings.Error_MissingLockFile, packagesLockFilePath);
+                // invalid input since packages.lock.json file does not exist along with RestoreLockedMode set to strict (or new flag enabled, depending on preference).
+                var message = string.Format(CultureInfo.CurrentCulture, Strings.Error_<Some error message ID, e.g. MissingLockFile>, packagesLockFilePath);
 
                 // directly log to the request logger when we're not going to rewrite the assets file otherwise this log will
                 // be skipped for netcore projects.
